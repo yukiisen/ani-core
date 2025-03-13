@@ -56,7 +56,7 @@ fn generate_config () -> std::io::Result<Config> {
 }
 
 /// this is mainly used to join the config files with the corresponding folder at the ani-core
-/// crate
+/// crate (useless to sum it up)
 pub fn join_paths (p1: &str, p2: &str) -> String {
     std::path::Path::new(p1).join(p2).to_str().unwrap().to_string()
 }

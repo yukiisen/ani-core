@@ -1,16 +1,16 @@
 use std::process;
 use std::fs;
-
-use rusqlite::{Connection, Result};
+use sqlx::SqlitePool;
+use anyhow::Result;
 
 use crate::utils::config::Config;
 
-pub fn initialize (config: &Config) -> Result<()> {
-    if fs::exists(&config.database_path).unwrap_or(true) {
-        return Ok(());
-    }
+pub async fn initialize (config: &Config) -> Result<SqlitePool, sqlx::Error> {
+    let connection = SqlitePool::connect(&config.database_path).await?;
 
-    let connection = Connection::open(&config.database_path)?;
+    if fs::exists(&config.database_path).unwrap_or(true) {
+        return Ok(connection);
+    }
 
     let Ok(raw_queries) = fs::read_to_string(&config.database_schema) else {
         eprintln!("no schema file found in {}", config.database_schema);
@@ -21,8 +21,8 @@ pub fn initialize (config: &Config) -> Result<()> {
     let queries = raw_queries.split(";");
     
     for query in queries {
-        connection.execute(query, ())?;
+        sqlx::query(query).execute(&connection).await?;
     }
 
-    Ok(())
+    Ok(connection)
 }
