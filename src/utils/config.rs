@@ -18,7 +18,8 @@ pub fn get_config_path () -> &'static str {
 pub struct Config {
     pub animes_path: String,
     pub database_path: String,
-    pub database_schema: String
+    pub database_schema: String,
+    pub images: String
 }
 
 impl Default for Config {
@@ -26,7 +27,8 @@ impl Default for Config {
         Config {   
             animes_path: join_paths(get_config_path(), "animes/"),
             database_path: join_paths(get_config_path(), "database.db"),
-            database_schema: join_paths(get_config_path(), "schema.sql")
+            database_schema: join_paths(get_config_path(), "schema.sql"),
+            images: join_paths(get_config_path(), "images")
         }
     }
 }
