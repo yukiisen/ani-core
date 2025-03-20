@@ -10,6 +10,7 @@ pub struct AnimeWithEp {
     #[sqlx(rename = "localName")]
     pub local_name: String,
     pub title: String,
+    pub r#type: String,
     pub episode_id: u32,
     pub aired: String,
     pub episode_number: u16,

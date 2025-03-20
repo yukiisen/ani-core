@@ -41,11 +41,17 @@ pub async fn get_latest_updates (offset: u16, pool: &SqlitePool) -> Result<Vec<A
         eps.anime_id,
         ani.mal_id,
         ani.title,
-        ani.localName
+        ani.localName,
+        ani.type
     FROM episodes eps
     JOIN animes ani ON eps.anime_id = ani.id
     WHERE eps.aired = (
         SELECT MAX(aired)
+        FROM episodes eps2
+        WHERE eps2.anime_id = eps.anime_id
+    ) AND 
+          eps.episode_number = (
+        SELECT MAX(episode_number)
         FROM episodes eps2
         WHERE eps2.anime_id = eps.anime_id
     )
