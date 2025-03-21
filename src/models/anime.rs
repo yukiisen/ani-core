@@ -62,3 +62,8 @@ pub struct SearchResult {
     #[sqlx(skip)]
     pub themes: Vec<String>,
 }
+
+#[derive(FromRow, Debug, Serialize)]
+pub struct AnimeCard {
+    
+}
